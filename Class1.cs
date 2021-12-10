@@ -35,13 +35,118 @@ namespace VectorCreater
         }
         virtual public void slect1()
         {
+            
         }
         virtual public void slect2()
         {
+            
         }
 
     }
+    class Secture : Shape 
+    {
+        private Point a, b;
+        private bool f;
+        public float alfa; //коэa наклона
+        public Secture(int _x1,int _y1,int _x2,int _y2) 
+        {
+            a.X = _x1;
+            a.Y = _y1;
+            b.X = _x2;
+            b.Y = _y2;
+            f = true;
+            clr = Color.Black;            
+            alfa = (b.Y - a.Y) / (b.X - a.X); //коэфф наклона
+            
+            
+        }
+        override public void draw(PictureBox sender, Bitmap bmp, Graphics g) //метод для рисования на pictureBox
+        {
 
+            Pen pen = new Pen(clr);
+            if (f == true) //проверка на то, "выделен" ли объект или нет
+            {
+                pen.Width = 2; //выделение объекта толтсой линией
+            }
+            g.DrawLine(pen, a, b);
+            sender.Image = bmp;
+        }
+        public override void move(PictureBox sender, int _x, int _y)
+        {
+            a.X = a.X + _x;
+            a.Y = a.Y + _y;
+            b.X = b.X + _x;
+            b.Y = b.Y + _y;
+            /*if (locationCheck(sender) == false)
+            {
+            }*/
+        }
+        public override void resize(PictureBox sender, int _d)
+        {
+            if (alfa != 0)
+            {
+                a.X = a.X + (int)alfa * _d;
+                a.Y = a.Y - (int)alfa * _d;
+                b.X = b.X - (int)alfa * _d;
+                b.Y = b.Y + (int)alfa * _d;
+            }
+            
+
+        }
+
+        override public bool isChecked(MouseEventArgs e) //проверка на то, нажат ли объект мышкой
+        {
+
+            if(a.X > b.X) 
+            {
+                if (a.Y < b.Y)
+                {
+                    if (e.X < a.X && e.X > b.X && e.Y > a.Y && e.Y < b.Y)
+                    {
+                        return true;
+                    }
+                }
+                else if(a.Y > b.Y) 
+                {
+                    if (e.X > a.X && e.X < b.X && e.Y < a.Y && e.Y > b.Y) 
+                    {
+                        return true;
+                    }
+                }
+            } 
+            else if(a.X < b.X) 
+            {
+                if (a.Y < b.Y)
+                {
+                    if (e.X < a.X && e.X > b.X && e.Y > a.Y && e.Y < b.Y)
+                    {
+                        return true;
+                    }
+                }
+                else if (a.Y > b.Y)
+                {
+                    if (e.X > a.X && e.X < b.X && e.Y < a.Y && e.Y > b.Y)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        override public bool getF() //получение значения " выделенный/не выделенный" у объекта
+        {
+            return f;
+        }
+        override public void slect1() //изменение значения f на true
+        {
+            f = true;
+        }
+        override public void slect2() //изменение значения f на false
+        {
+            f = false;
+        }
+
+    }
     class CSquare : Shape
     {
         private int x,y,l;
@@ -393,6 +498,20 @@ namespace VectorCreater
                 }
             }
         }
+        /*public void changeAngle(PictureBox sender, int _d) 
+        {
+            for (int i = _count - 1; i >= 0; i--)
+            {
+                if (_storage[i] != null)
+                {
+                    if (_storage[i] is Secture && _storage[i].getF() == true)
+                    {
+                        Secture s = (Secture)_storage[i];
+                        s.reAngle(sender,_d);
+                    }
+                }
+            }
+        }*/
         public int getCount() //получение количества объектов в хранилище (на форме)
         {
             return _count;

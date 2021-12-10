@@ -59,6 +59,12 @@ namespace VectorCreater
                     g.Clear(Color.WhiteSmoke);
                     Refresh();
                 }
+                else if(radioButton4.Checked == true) 
+                {
+                    storage.addObj(new Secture(e.X - 20,e.Y + 20,e.X + 20,e.Y - 20));
+                    g.Clear(Color.WhiteSmoke);
+                    Refresh();
+                }
                 lb1.Text = storage.getCount().ToString();
             }
             else //если мышью нажали на объект на форме
@@ -125,6 +131,18 @@ namespace VectorCreater
                 g.Clear(Color.WhiteSmoke);
                 Refresh();
             }
+            /*if(e.KeyData == Keys.Left) 
+            {
+                storage.changeAngle(pictureBox1,-5);
+                g.Clear(Color.WhiteSmoke);
+                Refresh();
+            }
+            if (e.KeyData == Keys.Right)
+            {
+                storage.changeAngle(pictureBox1, 5);
+                g.Clear(Color.WhiteSmoke);
+                Refresh();
+            }*/
             lb1.Text = storage.getCount().ToString();
             Refresh();
         }

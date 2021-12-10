@@ -35,12 +35,13 @@
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.rbColorViolet = new System.Windows.Forms.RadioButton();
             this.rbColorBlue = new System.Windows.Forms.RadioButton();
             this.rbColorGreen = new System.Windows.Forms.RadioButton();
             this.rbColorYellow = new System.Windows.Forms.RadioButton();
             this.rbColorRed = new System.Windows.Forms.RadioButton();
             this.rbColorBlack = new System.Windows.Forms.RadioButton();
-            this.rbColorViolet = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -48,13 +49,14 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.radioButton4);
             this.panel1.Controls.Add(this.radioButton3);
             this.panel1.Controls.Add(this.lb1);
             this.panel1.Controls.Add(this.radioButton2);
             this.panel1.Controls.Add(this.radioButton1);
             this.panel1.Location = new System.Drawing.Point(461, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(100, 102);
+            this.panel1.Size = new System.Drawing.Size(100, 124);
             this.panel1.TabIndex = 1;
             // 
             // radioButton3
@@ -62,10 +64,10 @@
             this.radioButton3.AutoSize = true;
             this.radioButton3.Location = new System.Drawing.Point(4, 75);
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(88, 17);
+            this.radioButton3.Size = new System.Drawing.Size(90, 17);
             this.radioButton3.TabIndex = 2;
             this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "треугольник";
+            this.radioButton3.Text = "Треугольник";
             this.radioButton3.UseVisualStyleBackColor = true;
             // 
             // lb1
@@ -82,10 +84,10 @@
             this.radioButton2.AutoSize = true;
             this.radioButton2.Location = new System.Drawing.Point(4, 52);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(66, 17);
+            this.radioButton2.Size = new System.Drawing.Size(67, 17);
             this.radioButton2.TabIndex = 1;
             this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "квадрат";
+            this.radioButton2.Text = "Квадрат";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // radioButton1
@@ -93,10 +95,10 @@
             this.radioButton1.AutoSize = true;
             this.radioButton1.Location = new System.Drawing.Point(4, 29);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(47, 17);
+            this.radioButton1.Size = new System.Drawing.Size(48, 17);
             this.radioButton1.TabIndex = 0;
             this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "круг";
+            this.radioButton1.Text = "Круг";
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // pictureBox1
@@ -118,10 +120,23 @@
             this.panel2.Controls.Add(this.rbColorYellow);
             this.panel2.Controls.Add(this.rbColorRed);
             this.panel2.Controls.Add(this.rbColorBlack);
-            this.panel2.Location = new System.Drawing.Point(461, 110);
+            this.panel2.Location = new System.Drawing.Point(461, 142);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(100, 179);
+            this.panel2.Size = new System.Drawing.Size(100, 147);
             this.panel2.TabIndex = 5;
+            // 
+            // rbColorViolet
+            // 
+            this.rbColorViolet.AutoSize = true;
+            this.rbColorViolet.ForeColor = System.Drawing.Color.Violet;
+            this.rbColorViolet.Location = new System.Drawing.Point(4, 125);
+            this.rbColorViolet.Name = "rbColorViolet";
+            this.rbColorViolet.Size = new System.Drawing.Size(85, 17);
+            this.rbColorViolet.TabIndex = 5;
+            this.rbColorViolet.TabStop = true;
+            this.rbColorViolet.Text = "Филетовый";
+            this.rbColorViolet.UseVisualStyleBackColor = true;
+            this.rbColorViolet.CheckedChanged += new System.EventHandler(this.rbColorViolet_CheckedChanged);
             // 
             // rbColorBlue
             // 
@@ -189,18 +204,16 @@
             this.rbColorBlack.UseVisualStyleBackColor = false;
             this.rbColorBlack.CheckedChanged += new System.EventHandler(this.rbColorBlack_CheckedChanged);
             // 
-            // rbColorViolet
+            // radioButton4
             // 
-            this.rbColorViolet.AutoSize = true;
-            this.rbColorViolet.ForeColor = System.Drawing.Color.Violet;
-            this.rbColorViolet.Location = new System.Drawing.Point(4, 125);
-            this.rbColorViolet.Name = "rbColorViolet";
-            this.rbColorViolet.Size = new System.Drawing.Size(85, 17);
-            this.rbColorViolet.TabIndex = 5;
-            this.rbColorViolet.TabStop = true;
-            this.rbColorViolet.Text = "Филетовый";
-            this.rbColorViolet.UseVisualStyleBackColor = true;
-            this.rbColorViolet.CheckedChanged += new System.EventHandler(this.rbColorViolet_CheckedChanged);
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Location = new System.Drawing.Point(4, 99);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(68, 17);
+            this.radioButton4.TabIndex = 3;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Text = "Отрезок";
+            this.radioButton4.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -239,6 +252,7 @@
         private System.Windows.Forms.RadioButton rbColorRed;
         private System.Windows.Forms.RadioButton rbColorBlack;
         private System.Windows.Forms.RadioButton rbColorViolet;
+        private System.Windows.Forms.RadioButton radioButton4;
     }
 }
 
