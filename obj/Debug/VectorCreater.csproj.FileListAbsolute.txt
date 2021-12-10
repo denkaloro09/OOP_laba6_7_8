@@ -1,0 +1,10 @@
+C:\Users\Денис\source\repos\VectorCreater\bin\Debug\VectorCreater.exe.config
+C:\Users\Денис\source\repos\VectorCreater\bin\Debug\VectorCreater.exe
+C:\Users\Денис\source\repos\VectorCreater\bin\Debug\VectorCreater.pdb
+C:\Users\Денис\source\repos\VectorCreater\obj\Debug\VectorCreater.csprojAssemblyReference.cache
+C:\Users\Денис\source\repos\VectorCreater\obj\Debug\VectorCreater.Form1.resources
+C:\Users\Денис\source\repos\VectorCreater\obj\Debug\VectorCreater.Properties.Resources.resources
+C:\Users\Денис\source\repos\VectorCreater\obj\Debug\VectorCreater.csproj.GenerateResource.cache
+C:\Users\Денис\source\repos\VectorCreater\obj\Debug\VectorCreater.csproj.CoreCompileInputs.cache
+C:\Users\Денис\source\repos\VectorCreater\obj\Debug\VectorCreater.exe
+C:\Users\Денис\source\repos\VectorCreater\obj\Debug\VectorCreater.pdb
