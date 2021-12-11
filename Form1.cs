@@ -21,6 +21,7 @@ namespace VectorCreater
 
         Storage storage = new Storage(100); //создание хранилища
         Bitmap bmp = new Bitmap(1800,800); //создание места для рисования
+        Point temp = new Point(0, 0);
         public Bitmap Image { get; internal set; }
         //SortedDictionary<char, Command> commands = new SortedDictionary<char, Command>();
 
@@ -38,40 +39,125 @@ namespace VectorCreater
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             Graphics g = Graphics.FromImage(bmp);
-
-            if (storage.checkInfo1(e) == false) //если нажали по форме
+            RadioButton rb = rbColorBlack; //выбор цвета создаваемой компоненты
+            if(rbColorBlack.Checked == true) 
             {
-                if (radioButton1.Checked == true)
-                {
-                    storage.addObj(new CCircle(e.X, e.Y, 20));
-                    g.Clear(Color.WhiteSmoke);
-                    Refresh();
-                }
-                else if (radioButton2.Checked == true)
-                {
-                    storage.addObj(new CSquare(e.X, e.Y, 40));
-                    g.Clear(Color.WhiteSmoke);
-                    Refresh();
-                }
-                else if (radioButton3.Checked == true)
-                {
-                    storage.addObj(new CTriangle(e.X, e.Y - 30, e.X + 20, e.Y + 10, e.X - 20, e.Y + 10));
-                    g.Clear(Color.WhiteSmoke);
-                    Refresh();
-                }
-                else if(radioButton4.Checked == true) 
-                {
-                    storage.addObj(new Secture(e.X - 20,e.Y + 20,e.X + 20,e.Y - 20));
-                    g.Clear(Color.WhiteSmoke);
-                    Refresh();
-                }
-                lb1.Text = storage.getCount().ToString();
+                rb = rbColorBlack;
+            } 
+            else if (rbColorRed.Checked == true)
+            {
+                rb = rbColorRed;
             }
-            else //если мышью нажали на объект на форме
+            else if(rbColorYellow.Checked == true)
             {
-                lb1.Text = storage.getCount().ToString();
-                g.Clear(Color.WhiteSmoke);
-                Refresh();
+                rb = rbColorYellow;
+            }
+            else if(rbColorGreen.Checked == true)
+            {
+                rb = rbColorGreen;
+            }
+            else if(rbColorBlue.Checked == true)
+            {
+                rb = rbColorBlue;
+            }
+            else if(rbColorViolet.Checked == true)
+            {
+                rb = rbColorViolet;
+            }
+            if (Control.ModifierKeys == Keys.Control) //если хажат Ctrl
+            {
+                if (storage.checkInfo2(e) == false) 
+                {
+                    if (radioButton1.Checked == true)
+                    {
+                        storage.addObj(new CCircle(e.X, e.Y, 20, rb.ForeColor));
+                        g.Clear(Color.WhiteSmoke);
+                        Refresh();
+                    }
+                    else if (radioButton2.Checked == true)
+                    {
+                        storage.addObj(new CSquare(e.X, e.Y, 40, rb.ForeColor));
+                        g.Clear(Color.WhiteSmoke);
+                        Refresh();
+                    }
+                    else if (radioButton3.Checked == true)
+                    {
+                        storage.addObj(new CTriangle(e.X, e.Y - 30, e.X + 20, e.Y + 10, e.X - 20, e.Y + 10, rb.ForeColor));
+                        g.Clear(Color.WhiteSmoke);
+                        Refresh();
+                    }
+                    else if (radioButton4.Checked == true)
+                    {
+                        if (temp.X == 0)
+                        {
+                            temp = new Point(e.X, e.Y);
+                        }
+                        else
+                        {
+                            storage.addObj(new Secture(temp.X, temp.Y, e.X, e.Y, rb.ForeColor));
+                            g.Clear(Color.WhiteSmoke);
+                            temp.X = 0;
+                            temp.Y = 0;
+                            Refresh();
+                        }
+
+                    }
+                    lb1.Text = storage.getCount().ToString();
+                }
+                else 
+                {
+                    lb1.Text = storage.getCount().ToString();
+                    g.Clear(Color.WhiteSmoke);
+                    Refresh();
+                }
+
+            }
+            else
+            {
+                if (storage.checkInfo1(e) == false) //если нажали по форме
+                {
+                    if (radioButton1.Checked == true)
+                    {
+                        storage.addObj(new CCircle(e.X, e.Y, 20, rb.ForeColor));
+                        g.Clear(Color.WhiteSmoke);
+                        Refresh();
+                    }
+                    else if (radioButton2.Checked == true)
+                    {
+                        storage.addObj(new CSquare(e.X, e.Y, 40, rb.ForeColor));
+                        g.Clear(Color.WhiteSmoke);
+                        Refresh();
+                    }
+                    else if (radioButton3.Checked == true)
+                    {
+                        storage.addObj(new CTriangle(e.X, e.Y - 30, e.X + 20, e.Y + 10, e.X - 20, e.Y + 10, rb.ForeColor));
+                        g.Clear(Color.WhiteSmoke);
+                        Refresh();
+                    }
+                    else if (radioButton4.Checked == true)
+                    {
+                        if (temp.X == 0)
+                        {
+                            temp = new Point(e.X, e.Y);
+                        }
+                        else
+                        {
+                            storage.addObj(new Secture(temp.X, temp.Y, e.X, e.Y, rb.ForeColor));
+                            g.Clear(Color.WhiteSmoke);
+                            temp.X = 0;
+                            temp.Y = 0;
+                            Refresh();
+                        }
+
+                    }
+                    lb1.Text = storage.getCount().ToString();
+                }
+                else //если мышью нажали на объект на форме
+                {
+                    lb1.Text = storage.getCount().ToString();
+                    g.Clear(Color.WhiteSmoke);
+                    Refresh();
+                }
             }
             Refresh();
         }
@@ -181,6 +267,35 @@ namespace VectorCreater
         {
             RadioButton rb = (RadioButton)sender;
             storage.changeObjColor(rb.ForeColor);
+        }
+
+        private void btnGroup_Click(object sender, EventArgs e)
+        {
+            Graphics g = Graphics.FromImage(bmp);
+            storage.createGroup();
+            g.Clear(Color.WhiteSmoke);
+            Refresh();
+        }
+
+        private void btnReGroup_Click(object sender, EventArgs e)
+        {
+            Graphics g = Graphics.FromImage(bmp);
+            storage.deleteGroup();
+            g.Clear(Color.WhiteSmoke);
+            Refresh();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            storage.saveObjs();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Graphics g = Graphics.FromImage(bmp);
+            storage.loadObjs();
+            g.Clear(Color.WhiteSmoke);
+            Refresh();
         }
     }
 }
