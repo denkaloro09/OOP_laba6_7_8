@@ -16,9 +16,8 @@ namespace VectorCreater
         public Form1()
         {
             InitializeComponent();
-            //storage.observers += new System.EventHandler(this.ColorObserver);
+            
         }
-
         Storage storage = new Storage(100); //создание хранилища
         Bitmap bmp = new Bitmap(1800,800); //создание места для рисования
         Point temp = new Point(0, 0);
@@ -31,10 +30,21 @@ namespace VectorCreater
         }*/
         private void Form1_Load(object sender, EventArgs e)
         {
-            /*commands.Add('A', new MoveCommand(-10, 0));
-            commands.Add('D', new MoveCommand(10, 0));
-            commands.Add('W', new MoveCommand(0, -10));
-            commands.Add('S', new MoveCommand(0, 10));*/
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Дерево");
+            myTreeView treeView1 = new myTreeView();
+            treeView1 = new myTreeView();
+            treeView1.Location = new System.Drawing.Point(567, 12);
+            treeView1.Name = "treeView1";
+            treeNode1.Name = "Узел1";
+            treeNode1.Text = "Дерево";
+            treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
+            treeView1.SelectedNode = treeNode1;
+            treeView1.Size = new System.Drawing.Size(191, 277);
+            treeView1.TabIndex = 10;
+            this.Controls.Add(treeView1);
+            treeView1.AfterSelect += new TreeViewEventHandler(treeView1_AfterSelect);
+            treeView1.Name = "tview";
+            (Controls["tview"] as myTreeView).addStorage(storage);
         }
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
@@ -64,7 +74,7 @@ namespace VectorCreater
             {
                 rb = rbColorViolet;
             }
-            if (Control.ModifierKeys == Keys.Control) //если хажат Ctrl
+            if (Control.ModifierKeys == Keys.Control) //если зажат Ctrl
             {
                 if (storage.checkInfo2(e) == false) 
                 {
@@ -151,6 +161,10 @@ namespace VectorCreater
 
                     }
                     lb1.Text = storage.getCount().ToString();
+                    (Controls["tview"] as myTreeView).Nodes.Clear();
+                    (Controls["tview"] as myTreeView).Nodes.Add(new TreeNode("Дерево"));
+                    storage.processNode((Controls["tview"] as myTreeView).Nodes[0], storage._storage);
+                    (Controls["tview"] as myTreeView).ExpandAll();
                 }
                 else //если мышью нажали на объект на форме
                 {
@@ -159,6 +173,7 @@ namespace VectorCreater
                     Refresh();
                 }
             }
+            (Controls["tview"] as myTreeView).callRecursive(Controls["tview"] as myTreeView, storage);
             Refresh();
         }
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -203,6 +218,10 @@ namespace VectorCreater
             {
                 storage.deleteWhenDel();
                 g.Clear(Color.WhiteSmoke);
+                (Controls["tview"] as myTreeView).Nodes.Clear();
+                (Controls["tview"] as myTreeView).Nodes.Add(new TreeNode("Дерево"));
+                storage.processNode((Controls["tview"] as myTreeView).Nodes[0], storage._storage);
+                (Controls["tview"] as myTreeView).ExpandAll();
                 Refresh();
             }
             if(e.KeyData == Keys.Up) 
@@ -274,6 +293,10 @@ namespace VectorCreater
             Graphics g = Graphics.FromImage(bmp);
             storage.createGroup();
             g.Clear(Color.WhiteSmoke);
+            (Controls["tview"] as myTreeView).Nodes.Clear();
+            (Controls["tview"] as myTreeView).Nodes.Add(new TreeNode("Дерево"));
+            storage.processNode((Controls["tview"] as myTreeView).Nodes[0], storage._storage);
+            (Controls["tview"] as myTreeView).ExpandAll();
             Refresh();
         }
 
@@ -282,6 +305,10 @@ namespace VectorCreater
             Graphics g = Graphics.FromImage(bmp);
             storage.deleteGroup();
             g.Clear(Color.WhiteSmoke);
+            (Controls["tview"] as myTreeView).Nodes.Clear();
+            (Controls["tview"] as myTreeView).Nodes.Add(new TreeNode("Дерево"));
+            storage.processNode((Controls["tview"] as myTreeView).Nodes[0], storage._storage);
+            (Controls["tview"] as myTreeView).ExpandAll();
             Refresh();
         }
 
@@ -296,6 +323,60 @@ namespace VectorCreater
             storage.loadObjs();
             g.Clear(Color.WhiteSmoke);
             Refresh();
+        }
+        
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //storage.getObjectSticky();
+        }
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e) 
+        {
+            Graphics g = Graphics.FromImage(bmp);
+            (Controls["tview"] as myTreeView).notifyStorage(e.Node);
+            g.Clear(Color.WhiteSmoke);
+            Refresh();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            storage.makeObjSticky();
+        }
+    }
+    class myTreeView : TreeView
+    {
+        private Storage storage;
+
+        public void addStorage(Storage _storage)
+        {
+            storage = _storage;
+        }
+        public void notifyStorage(TreeNode treeNode)
+        {
+            storage.treeNodeSelect(treeNode);
+            //storage.Change
+            //короче если чето в дереве выберем, то тут делаем так
+            //чтобы и в хранилище чето менялось
+
+        }
+        public void objSelectRecursive(TreeNode treeNode,Shape shape)
+        {
+            if (treeNode.Tag == shape)
+            {
+                treeNode.TreeView.SelectedNode = treeNode;
+            }
+            foreach (TreeNode tn in treeNode.Nodes)
+            {          
+                objSelectRecursive(tn,shape);
+            }
+        }
+        public void callRecursive(myTreeView treeView,Storage s)
+        {
+            Shape shape = s.getSelectedShape();
+            foreach (TreeNode n in treeView.Nodes)
+            {
+                objSelectRecursive(n, shape);               
+            }
         }
     }
 }

@@ -13,6 +13,8 @@ namespace VectorCreater
     class Shape //базовый класс с виртуальными методами
     {
         protected Color clr;
+        public bool sticky;
+
         virtual public void draw(PictureBox sender, Bitmap bmp, Graphics g)
         {
         }
@@ -36,19 +38,69 @@ namespace VectorCreater
         virtual public void load(StreamReader _file) //выгрузка данных об объекте из файла
         {
         }
-        virtual public bool getF()
+        virtual public bool getF() //методы для выделения
         {
             return false;
         }
         virtual public void slect1()
         {
-
         }
         virtual public void slect2()
         {
-
         }
+        virtual public bool isShapeSticky() //методы для липкого объекта
+        {
+            return sticky;
+        }
+        virtual public bool isStickyObjIntersectThis(Shape StickyShape) 
+        {
+            return false;
+        }
+        /*virtual public void getSticky() 
+        {
+        }
+        virtual public void stopBeingSticky() 
+        {
+        }
+        virtual public Shape Intersect(Shape StickyShape,Shape shape) //проверяет пересечение/касание двух фигур
+        {
+            if (StickyShape is CSquare) //если липкий объект - квадрат
+            {
+                CSquare sq1 = (CSquare)StickyShape;
+                if(shape is CSquare) //если второй объект - квадрат
+                {
+                    CSquare sq2 = (CSquare)shape;
+                         if(sq2.getX() + sq2.getL() / 2 >= sq1.getX() - sq1.getL() / 2 && sq2.getY() + sq2.getL() / 2 >= sq1.getY() - sq1.getL() / 2) 
+                    {
+                        if (sq2.getX() + sq2.getL() / 2 <= sq1.getX() + sq1.getL() / 2 && sq2.getY() + sq2.getL() / 2 <= sq1.getY() + sq1.getL() / 2)
+                            return shape;
+                    } 
+                    else if(sq2.getX() - sq2.getL() / 2 <= sq1.getX() + sq1.getL() / 2 && sq2.getY() + sq2.getL() / 2 >= sq1.getY() - sq1.getL() / 2) 
+                    {
+                        if (sq2.getX() - sq2.getL() / 2 >= sq1.getX() - sq1.getL() / 2 && sq2.getY() + sq2.getL() / 2 <= sq1.getY() + sq1.getL() / 2)
+                            return shape;
+                    }
+                    else if(sq2.getX() + sq2.getL() / 2 >= sq1.getX() - sq1.getL() / 2 && sq2.getY() - sq2.getL() / 2 <= sq1.getY() + sq1.getL() / 2) 
+                    {
+                        if (sq2.getX() + sq2.getL() / 2 <= sq1.getX() + sq1.getL() / 2 && sq2.getY() - sq2.getL() / 2 >= sq1.getY() - sq1.getL() / 2)
+                            return shape;
+                    }
+                    else if(sq2.getX() - sq2.getL() / 2 <= sq1.getX() + sq1.getL() / 2 && sq2.getY() - sq2.getL() / 2 <= sq1.getY() + sq1.getL() / 2)
+                    {
+                        if (sq2.getX() - sq2.getL() / 2 >= sq1.getX() - sq1.getL() / 2 && sq2.getY() - sq2.getL() / 2 >= sq1.getY() - sq1.getL() / 2)
+                            return shape;
+                    }
+                }
+                else if(shape is CCircle) //если второй объект - круг
+                {
 
+                }
+                
+            }
+            return null;
+        }
+        virtual public void addObserver(Shape o) { }
+        virtual public Shape notifyEveryone() { return null; }*/
     }
     class Secture : Shape
     {
@@ -212,14 +264,49 @@ namespace VectorCreater
     {
         private int x, y, l;
         private bool f;
+        //private bool sticky;
+        //private List<Shape> _observers;
         public CSquare(int _x, int _y, int _l, Color _clr)
         {
             x = _x;
             y = _y;
             l = _l;
             f = true;
+            sticky = false;
             clr = _clr;
         }
+        /*public override void getSticky() //делаем объект липким
+        {
+            sticky = true;
+            _observers = new List<Shape>();
+        }
+        public override void addObserver(Shape o)
+        {
+            _observers.Add(o); //добавляем наблюдателя 
+        }
+        public override Shape notifyEveryone() //оповещаем всех наблюдателей
+        {
+            foreach(Shape o in _observers) 
+            {
+                return o.Intersect(this,o);
+            }
+            return null;
+        }
+        public override void stopBeingSticky() //возвращаем объект в нормальное состояние (перестает быть липким)
+        {
+            sticky = false;
+            for(int i =0;i < _observers.Count; i++) //очищаем список наблюдателей
+            {
+                _observers.RemoveAt(i);
+            }
+        }
+        public override Shape Intersect(Shape StickyShape,Shape shape) 
+        {
+            return base.Intersect(StickyShape, shape);
+        }*/
+        public int getX() { return x; }
+        public int getY() { return y; }
+        public int getL() { return l; }
         public override void save(StreamWriter _file) //сохранение объекта
         {
             _file.WriteLine("R"); //пишем, что записываемый объект - квадрат
@@ -289,6 +376,10 @@ namespace VectorCreater
                 return false;
             }
         }
+        /*public bool returnSticky() 
+        {
+            return sticky;
+        }*/
         override public bool getF() //получение значения " выделенный/не выделенный" у объекта
         {
             return f;
@@ -332,7 +423,7 @@ namespace VectorCreater
             a.Y = Convert.ToInt32(_file.ReadLine());
             b.X = Convert.ToInt32(_file.ReadLine());
             b.Y = Convert.ToInt32(_file.ReadLine());
-            a.X = Convert.ToInt32(_file.ReadLine());
+            c.X = Convert.ToInt32(_file.ReadLine());
             c.Y = Convert.ToInt32(_file.ReadLine());
             clr = Color.FromName(_file.ReadLine());
         }
@@ -434,7 +525,31 @@ namespace VectorCreater
             r = _r;
             f = true;
             clr = _clr;
+            sticky = false;
         }
+        public override bool isStickyObjIntersectThis(Shape StickyShape)
+        {
+            if(StickyShape is CCircle) 
+            {
+                CCircle shape = (CCircle)StickyShape;
+                if(Math.Sqrt(Math.Pow(shape.getX() - this.x, 2) + Math.Pow(shape.getY() - this.y, 2)) <= (shape.getR() + this.r)) 
+                {
+                    return true;
+                }
+            } 
+            else if(StickyShape is CSquare) 
+            {
+                CSquare shape = (CSquare)StickyShape;
+                if(Math.Sqrt(Math.Pow(shape.getX() - this.x, 2) + Math.Pow(shape.getY() - this.y, 2)) <= (shape.getL() + this.r)) 
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public int getX() { return x; }
+        public int getY() { return y; }
+        public int getR() { return r; }
         public override void save(StreamWriter _file) //сохранение объекта
         {
             _file.WriteLine("C"); //пишем, что записываемый объект - круг
@@ -549,8 +664,8 @@ namespace VectorCreater
     {
         private int _maxcount;
         private int _count;
-        private Shape[] _storage;
-        //public System.EventHandler observers;
+        public Shape[] _storage;
+        public System.EventHandler observers;
         public Storage(int maxcount)
         {
             _maxcount = maxcount; _count = 0;
@@ -558,13 +673,34 @@ namespace VectorCreater
             for (int i = 0; i < _maxcount; i++)
                 _storage[i] = null;
         }
+        /*public void getObjectSticky()
+        {
+            for (int i = _count - 1; i >= 0; i--)
+            {
+                if (_storage[i] != null)
+                {
+                    if (_storage[i].getF() == true)
+                    {
+                        _storage[i].getSticky();
+                        for (int j = _count - 1; j >= 0; j--)
+                        {
+                            if (_storage[i] != null && i != j)
+                            {
+                                _storage[i].addObserver(_storage[i]);
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }*/
         public void saveObjs() //функция сохранения хранилища в файл
         {
-            
+
             string path = @"C:\cslaba\cs.txt"; //путь до файла
             StreamWriter cfile = new StreamWriter(path, false); //создаем записыватель файла
             cfile.WriteLine(_count); //записываем размер хранилища
-            for (int i = 0;i< _count;i++)
+            for (int i = 0; i < _count; i++)
             {
                 if (_storage[i] != null) //если объект существует
                 {
@@ -584,11 +720,11 @@ namespace VectorCreater
             _count = Convert.ToInt32(sr.ReadLine());
             _maxcount = 100;
             _storage = new Shape[_maxcount]; //создаем хранилище определенного размера
-            for(int i = 0; i < _count; i++) 
+            for (int i = 0; i < _count; i++)
             {
                 code = Convert.ToChar(sr.ReadLine()); //считываем тип объекта
                 _storage[i] = factory.createShape(code); //factory создает объект определенного типа
-                if(_storage[i] != null) 
+                if (_storage[i] != null)
                 {
                     _storage[i].load(sr); //считываем информацию о объекте из файла
                 }
@@ -608,7 +744,7 @@ namespace VectorCreater
                     _storage[i].slect2();
                 }
                 _count++;
-                _maxcount++;                
+                _maxcount++;
             }
             else if (_count == 0)
             {
@@ -651,8 +787,32 @@ namespace VectorCreater
                 {
                     if (_storage[i].getF() == true)
                     {
+                        if(_storage[i].isShapeSticky() == true) 
+                        {
+                            for (int j = _count - 1; j >= 0; j--) 
+                            {
+                                if(i != j) 
+                                {
+                                    if (_storage[j].isStickyObjIntersectThis(_storage[i]) == true)
+                                    {
+                                        _storage[j].move(sender,_x,_y);
+                                    }
+                                }
+                            }
+                        }
                         _storage[i].move(sender, _x, _y);
                     }
+                   
+                }
+            }
+        }
+        public void makeObjSticky() 
+        {
+            for (int i = _count - 1; i >= 0; i--) 
+            {
+                if(_storage[i].getF() == true) 
+                {
+                    _storage[i].sticky = true;
                 }
             }
         }
@@ -761,6 +921,15 @@ namespace VectorCreater
             }
             return false;
         }
+        public void createIntersectGroup(int one, int two)
+        {
+            CGroup group = new CGroup(2);
+            group.addObj(_storage[one]);
+            group.addObj(_storage[two]);
+            deleteObj(one);
+            deleteObj(two);
+            addObj(group);
+        }
         public void createGroup() //метод создания группы
         {
             int sum = 0; //количество выделенных объектов
@@ -805,7 +974,86 @@ namespace VectorCreater
                             addObj(tgroup._group[j]);
                             tgroup.deleteObj(j);
                         }
+                        deleteObj(i); //удаление группы из хранилища
                     }
+                }
+            }
+        }
+        public Shape getSelectedShape()
+        {
+            Shape selected = null;
+            for (int i = 0; i < _count; i++) 
+            {
+                if(_storage[i].getF() == true) 
+                {
+                    selected = _storage[i];
+                    return selected;
+                } 
+                else if (_storage[i].getF() == false && _storage[i] is CGroup)
+                {
+                    CGroup group = (CGroup)_storage[i];
+                    selected = group.getSelectedShape(ref selected);
+                    if(selected != null) 
+                    {
+                        return selected;
+                    }
+                }
+            }
+            return selected;
+        }
+        public void processNode(TreeNode tn, Shape[] s)
+        {
+            string str = "";
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] != null)
+                {
+                    if(s[i] is CCircle) 
+                    {
+                        str = "Круг";
+                        
+                    } 
+                    else if (s[i] is CSquare)
+                    {
+                        str = "Квадрат";
+                    }
+                    else if (s[i] is CTriangle)
+                    {
+                        str = "Треугольник";
+                    }
+                    else if (s[i] is Secture)
+                    {
+                        str = "Отрезок";
+                    } 
+                    else if(s[i] is CGroup)
+                    {
+                        str = "Группа";
+                    }
+                    tn.Nodes.Add(new TreeNode(str));
+                    tn.Nodes[i].Tag = s[i];
+                    if (s[i] is CGroup)
+                    {
+                        CGroup group = (CGroup)s[i];
+                        processNode(tn.Nodes[i], group._group);
+                    }
+                }
+            }
+        }
+        public void treeNodeSelect(TreeNode treeNode) 
+        {
+            allObjFalse();
+            for (int i = 0; i < _count; i++) 
+            {
+                //если объект наш самый
+                if (_storage[i] == treeNode.Tag) 
+                {
+                    _storage[i].slect1();
+                }
+                //если объект не наш самый но это группа
+                else if(_storage[i] != treeNode.Tag && _storage[i] is CGroup) 
+                {
+                    CGroup group = (CGroup)_storage[i];
+                    group.treeNodeSelect(treeNode);
                 }
             }
         }
@@ -832,6 +1080,44 @@ namespace VectorCreater
                 _group[i] = null;
             }
             _group = null;
+        }
+        public Shape getSelectedShape(ref Shape selected) 
+        {
+            for (int i = 0; i < _count; i++)
+            {
+                if (_group[i].getF() == true)
+                {
+                    selected = _group[i];
+                    return selected;
+                }
+                else if (_group[i].getF() == false && _group[i] is CGroup)
+                {
+                    CGroup group = (CGroup)_group[i];
+                    selected = group.getSelectedShape(ref selected);
+                    if (selected != null)
+                    {
+                        return selected;
+                    }
+                }
+            }
+            return selected;
+        }
+        public void treeNodeSelect(TreeNode treeNode) 
+        {
+            allObjFalse();
+            for (int i = 0; i < _count; i++)
+            {
+                if (_group[i] == treeNode.Tag)
+                {
+                    _group[i].slect1();
+                }
+                //если объект не наш самый но это группа
+                else if (_group[i] != treeNode.Tag && _group[i] is CGroup)
+                {
+                    CGroup group = (CGroup)_group[i];
+                    group.treeNodeSelect(treeNode);
+                }
+            }
         }
         public int getCount()
         {
@@ -932,6 +1218,13 @@ namespace VectorCreater
             }
             return false;
         }
+        public void allObjFalse()
+        {
+            for (int i = _count - 1; i >= 0; i--)
+            {
+                _group[i].slect2();
+            }
+        } 
         override public bool getF() //получение значения " выделенный/не выделенный" у объекта
         {
             return f;
@@ -947,10 +1240,7 @@ namespace VectorCreater
         override public void slect2() //изменение значения f на false
         {
             f = false;
-            for (int i = 0; i < _count; i++)
-            {
-                _group[i].slect2();
-            }
+            allObjFalse();
         }
     }
     
